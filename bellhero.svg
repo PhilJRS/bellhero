@@ -8,21 +8,37 @@
       draw.rect(100,100).fill('#f03').move(10,100).animate().move(10,600)
       draw.rect(100,100).fill('#00f').move(150,100).animate({delay: 500}).move(150,600)
 
+    const couleurNote = [
+  { note: 'do', color: '#FF0000' },      // Rouge
+  { note: 'do#', color: '#FF4500' },     // Rouge orange
+  { note: 're', color: '#FF6347' },      // Tomate
+  { note: 're#', color: '#FF8C00' },     // orange foncé
+  { note: 'mi', color: '#FFFF00' },      // jaune
+  { note: 'fa', color: '#7FFF00' },      // Vert chartreuse
+  { note: 'fa#', color: '#6B8E23' },     // Olivatre
+  { note: 'sol', color: '#006400' },      // Vert foncé
+  { note: 'sol#', color: '#008080' },     // Bleu sarcelle
+  { note: 'la', color: '#800080' },      // rouge pourpre
+  { note: 'la#', color: '#BC8F8F' },     // Rosybrown
+  { note: 'si', color: '#F08080' },      // Corail clair
+  { note: 'do_haut', color: '#FF0000' }, // Rouge
+];
+    
       const twinkle = [
-        {h : 1 , d : 1},
-        {h : 1 , d : 1},
+        {h : 0 , d : 1},
+        {h : 0 , d : 1},
+        {h : 7 , d : 1},
+        {h : 7 , d : 1},
+        {h : 9 , d : 1},
+        {h : 9 , d : 1},
+        {h : 7 , d : 2},
         {h : 5 , d : 1},
         {h : 5 , d : 1},
-        {h : 6 , d : 1},
-        {h : 6 , d : 1},
-        {h : 5 , d : 2},
         {h : 4 , d : 1},
         {h : 4 , d : 1},
-        {h : 3 , d : 1},
-        {h : 3 , d : 1},
         {h : 2 , d : 1},
         {h : 2 , d : 1},
-        {h : 1 , d : 2}
+        {h : 0 , d : 2}
       ]
     ]]>
   </script>
