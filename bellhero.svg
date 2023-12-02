@@ -1,45 +1,69 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <svg id="drawing" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" >
   <!--script type="text/javascript" xlink:href="svg.min.js"></script-->
+
+  <script type="text/javascript" xlink:href="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.js"></script>
   <script type="text/javascript" xlink:href="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.1/dist/svg.js"></script>
   <script type="text/javascript">
     <![CDATA[
-      var draw = SVG('#drawing')
-      draw.rect(100,100).fill('#f03').move(10,100).animate().move(10,600)
-      draw.rect(100,100).fill('#00f').move(150,100).animate({delay: 500}).move(150,600)
-
-    const couleurNote = [
-  { note: 'do', color: '#FF0000' },      // Rouge
-  { note: 'do#', color: '#FF4500' },     // Rouge orange
-  { note: 're', color: '#FF6347' },      // Tomate
-  { note: 're#', color: '#FF8C00' },     // orange foncé
-  { note: 'mi', color: '#FFFF00' },      // jaune
-  { note: 'fa', color: '#7FFF00' },      // Vert chartreuse
-  { note: 'fa#', color: '#6B8E23' },     // Olivatre
-  { note: 'sol', color: '#006400' },     // Vert foncé
-  { note: 'sol#', color: '#008080' },    // Bleu sarcelle
-  { note: 'la', color: '#800080' },      // rouge pourpre
-  { note: 'la#', color: '#BC8F8F' },     // Rosybrown
-  { note: 'si', color: '#F08080' },      // Corail clair
-  { note: 'do_haut', color: '#FF0000' }, // Rouge
-];
-    
-      const twinkle = [
-        {h : 0 , d : 1},
-        {h : 0 , d : 1},
-        {h : 7 , d : 1},
-        {h : 7 , d : 1},
-        {h : 9 , d : 1},
-        {h : 9 , d : 1},
-        {h : 7 , d : 2},
-        {h : 5 , d : 1},
-        {h : 5 , d : 1},
-        {h : 4 , d : 1},
-        {h : 4 , d : 1},
-        {h : 2 , d : 1},
-        {h : 2 , d : 1},
-        {h : 0 , d : 2}
-      ]
+      const chanson = {
+        tempo : 60 ,                      // nombre de "d" par minute
+        melodieNote : [0, 2, 4, 5, 6, 8], // indexé selon couleurNote
+        melodie: [                        // polyphonique
+          {h : [ 1 ] , d : 1},
+          {h : [ 1 ] , d : 1},
+          {h : [ 5 ] , d : 1},
+          {h : [ 5 ] , d : 1},
+          {h : [ 6 ] , d : 1},
+          {h : [ 6 ] , d : 1},
+          {h : [ 5 ] , d : 2},
+          {h : [ 4 ] , d : 1},
+          {h : [ 4 ] , d : 1},
+          {h : [ 3 ] , d : 1},
+          {h : [ 3 ] , d : 1},
+          {h : [ 2 ] , d : 1},
+          {h : [ 2 ] , d : 1},
+          {h : [ 1 ] , d : 2}]
+      }
+      const couleurNote = [
+        '#FF0000' , // Rouge            do
+        '#FF4500' , // Rouge orange     do#
+        '#FF6347' , // Tomate           re
+        '#FF8C00' , // orange foncé     re#
+        '#FFFF00' , // jaune            mi
+        '#7FFF00' , // Vert chartreuse  fa
+        '#6B8E23' , // Olivatre         fa#
+        '#006400' , // Vert foncé       sol
+        '#008080' , // Bleu sarcelle    sol#
+        '#800080' , // rouge pourpre    la
+        '#BC8F8F' , // Rosybrown        la#
+        '#F08080' , // Corail clair     si
+        '#FF0000'   // Rouge            do_haut
+      ];
+        
+      const clockTic = 20  //pixels , la moitié du plus court intervalle de temps entre 2 notes
+      var draw = SVG('#drawing').size('100%', '100%')
+      const rollW = $("#drawing")[0].clientWidth 
+      const noteW = Math.floor(rollW/chanson.melodieNote.length)
+      const rollH = chanson.melodie.map(n =>n.d).reduce((acc, val)=>acc+val)*2*clockTic
+      const amorce = 0 // $("#drawing").clientheight
+      var nested = draw.nested()
+      var roll = nested.rect(rollW, rollH+amorce).stroke({ color: '#f06', opacity: 0.6, width: 5 })
+      var cursor = 0
+      chanson.melodie.forEach((note, i) => {
+          var noteX = (note.h[0]-1)*noteW
+          var noteCouleur = couleurNote[chanson.melodieNote[note.h[0]-1]]  
+          var noteY = amorce + rollH - cursor - clockTic
+          cursor = cursor + note.d*clockTic*2
+          console.log({  i: i, noteX: noteX , noteY: noteY , noteCouleur: noteCouleur })
+          nested.rect(noteW, clockTic).move(noteX,noteY).fill(noteCouleur)
+      })
+      nested.move(0,0).animate({
+        duration: 3000,
+        ease : '-',
+        delay: 1000,
+        when: 'now',
+      }).move(0,600)
     ]]>
   </script>
 </svg>
