@@ -16,8 +16,8 @@
   { note: 'mi', color: '#FFFF00' },      // jaune
   { note: 'fa', color: '#7FFF00' },      // Vert chartreuse
   { note: 'fa#', color: '#6B8E23' },     // Olivatre
-  { note: 'sol', color: '#006400' },      // Vert foncé
-  { note: 'sol#', color: '#008080' },     // Bleu sarcelle
+  { note: 'sol', color: '#006400' },     // Vert foncé
+  { note: 'sol#', color: '#008080' },    // Bleu sarcelle
   { note: 'la', color: '#800080' },      // rouge pourpre
   { note: 'la#', color: '#BC8F8F' },     // Rosybrown
   { note: 'si', color: '#F08080' },      // Corail clair
