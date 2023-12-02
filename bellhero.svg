@@ -43,27 +43,23 @@
         
       const clockTic = 20  //pixels , la moitié du plus court intervalle de temps entre 2 notes
       var draw = SVG('#drawing').size('100%', '100%')
-      const rollW = $("#drawing")[0].clientWidth 
-      const noteW = Math.floor(rollW/chanson.melodieNote.length)
+      const windowW = $("#drawing")[0].clientWidth 
+      const windowH = $("#drawing")[0].clientHeight
+      draw.rect(windowW, windowH).fill('#000')
+      const noteW = Math.floor(windowW/chanson.melodieNote.length)
       const rollH = chanson.melodie.map(n =>n.d).reduce((acc, val)=>acc+val)*2*clockTic
-      const amorce = 0 // $("#drawing").clientheight
       var nested = draw.nested()
-      var roll = nested.rect(rollW, rollH+amorce).stroke({ color: '#f06', opacity: 0.6, width: 5 })
+      var roll = nested.rect(windowW, rollH).stroke({ color: '#f06', opacity: 0.6, width: 5 })
       var cursor = 0
       chanson.melodie.forEach((note, i) => {
           var noteX = (note.h[0]-1)*noteW
           var noteCouleur = couleurNote[chanson.melodieNote[note.h[0]-1]]  
-          var noteY = amorce + rollH - cursor - clockTic
+          var noteY = rollH - cursor - clockTic
           cursor = cursor + note.d*clockTic*2
           console.log({  i: i, noteX: noteX , noteY: noteY , noteCouleur: noteCouleur })
           nested.rect(noteW, clockTic).move(noteX,noteY).fill(noteCouleur)
       })
-      nested.move(0,0).animate({
-        duration: 3000,
-        ease : '-',
-        delay: 1000,
-        when: 'now',
-      }).move(0,600)
+      nested.move(0, windowH/2-rollH).animate(20000, 2000, 'now').move(0, windowH)
     ]]>
   </script>
 </svg>
