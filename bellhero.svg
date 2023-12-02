@@ -59,6 +59,7 @@
           console.log({  i: i, noteX: noteX , noteY: noteY , noteCouleur: noteCouleur })
           nested.rect(noteW, clockTic).move(noteX,noteY).fill(noteCouleur)
       })
+      draw.rect(windowW, 10).fill('#FFF').move(0, windowH-5*clockTic)
       nested.move(0, windowH/2-rollH).animate(20000, 2000, 'now').move(0, windowH)
     ]]>
   </script>
