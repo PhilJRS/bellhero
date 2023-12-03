@@ -6,27 +6,85 @@
   <script type="text/javascript" xlink:href="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.1/dist/svg.js"></script>
   <script type="text/javascript">
     <![CDATA[
-      const chanson = {
-        tempo : 60 ,                      // nombre de "d" par minute
-        melodieNote : [0, 2, 4, 5, 6, 8], // indexé selon couleurNote
-        melodie: [                        // polyphonique
-          {h : [ 1 ] , d : 1},
-          {h : [ 1 ] , d : 1},
-          {h : [ 5 ] , d : 1},
-          {h : [ 5 ] , d : 1},
-          {h : [ 6 ] , d : 1},
-          {h : [ 6 ] , d : 1},
-          {h : [ 5 ] , d : 2},
-          {h : [ 4 ] , d : 1},
-          {h : [ 4 ] , d : 1},
-          {h : [ 3 ] , d : 1},
-          {h : [ 3 ] , d : 1},
-          {h : [ 2 ] , d : 1},
-          {h : [ 2 ] , d : 1},
-          {h : [ 1 ] , d : 2}]
-      }
+     
+      const chanson = [                   // "Emmanuel"                        // polyphonique
+        {h : [11 , 4 ] , d : 1}, // mesure 1
+        {h : [5 , 4 ] , d : 1}, // Mesure 2
+        {h : [11 , 6 ] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [ 9 , 4] , d : 1},
+        {h : [12 , 9] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [ 9 , 6] , d : 2}, // Mesure 4
+        {h : [ 7 , 4] , d : 1},
+        {h : [ 7 , 4] , d : 1},
+        {h : [ 7 , 4] , d : 1},
+        {h : [ 9 , 6] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [ 7 , 2] , d : 1},
+        {h : [ 4 , 0] , d : 1},
+        {h : [ 7 , 2] , d : 1},
+        {h : [ 9 , 0] , d : 1},
+        {h : [ 6 , 0] , d : 1},
+        {h : [ 4 , 11] , d : 1},
+        {h : [ 2 , 11] , d : 1},
+        {h : [ 4 , 11] , d : 1},
+        {h : [ 11    ] , d : 1}, // mesure 7
+        {h : [ 9 , 4] , d : 1},
+        {h : [9 , 0] , d : 1},
+        {h : [4 ]    , d : 1},
+        {h : [4 ]    , d : 1},
+        {h : [6 , 3] , d : 1},
+        {h : [7 , 4] , d : 1},
+        {h : [7 , 4] , d : 1}, // mesure 9
+        {h : [6 , 2] , d : 1},
+        {h : [4 , 0] , d : 1},
+        {h : [2 , 9] , d : 1},
+        {h : [2 , 9] , d : 1},
+        {h : [2 , 9] , d : 2},
+        {h : [7 , 11] , d : 1},
+        {h : [9 , 2] , d : 1}, // Mesure 11
+        {h : [11 , 2] , d : 1},
+        {h : [11 , 2] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [9 , 4] , d : 1},
+        {h : [12 , 9] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [9 , 6] , d : 1},
+        {h : [7 , 2] , d : 1},   // Mesure 13 
+        {h : [7 , 2] , d : 1},
+        {h : [7 , 2] , d : 2},
+        {h : [2 , 7] , d : 1},  // Mesure 14
+        {h : [2 , 6] , d : 1},
+        {h : [2 , 6] , d : 1},
+        {h : [2 , 6] , d : 1}, 
+        {h : [11 , 7] , d : 1}, // Mesure 15
+        {h : [11 , 7] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [11 , 7] , d : 1}, // Mesure 16
+        {h : [9 , 4] , d : 1},
+        {h : [12 , 9] , d : 1},
+        {h : [11 , 7] , d : 1},
+        {h : [9 , 6] , d : 1},   // Mesure 17
+        {h : [7 , 4] , d : 1},
+        {h : [7 , 4] , d : 2},
+        {h : [9 , 6] , d : 1},   // Mesure 18
+        {h : [11 , 7] , d : 1},
+        {h : [7 , 2] , d : 1},
+        {h : [4 , 0] , d : 1},
+        {h : [7 , 2] , d : 1},    // Mesure 19
+        {h : [9 , 0] , d : 1},
+        {h : [6 , 0] , d : 1},
+        {h : [4 , 0] , d : 1},
+        {h : [2 , 11] , d : 1},
+        {h : [4 , 11] , d : 1},
+        {h : [4 , 11] , d : 1},
+        {h : [4 , 11] , d : 1}
+      ]
       const couleurNote = [
-        '#FF0000' , // Rouge            do
+        '#FF0000' , // Rouge            do3
         '#FF4500' , // Rouge orange     do#
         '#FF6347' , // Tomate           re
         '#FF8C00' , // orange foncé     re#
@@ -38,7 +96,7 @@
         '#800080' , // rouge pourpre    la
         '#BC8F8F' , // Rosybrown        la#
         '#F08080' , // Corail clair     si
-        '#FF0000'   // Rouge            do_haut
+        '#FF0000'   // Rouge            do4
       ];
         
       const clockTic = 20  //pixels , la moitié du plus court intervalle de temps entre 2 notes
@@ -46,21 +104,21 @@
       const windowW = $("#drawing")[0].clientWidth 
       const windowH = $("#drawing")[0].clientHeight
       draw.rect(windowW, windowH).fill('#000')
-      const noteW = Math.floor(windowW/chanson.melodieNote.length)
-      const rollH = chanson.melodie.map(n =>n.d).reduce((acc, val)=>acc+val)*2*clockTic
-      var nested = draw.nested()
-      var roll = nested.rect(windowW, rollH).stroke({ color: '#f06', opacity: 0.6, width: 5 })
+      const noteW = Math.floor(windowW/couleurNote.length)
+      const rollH = chanson.map(n =>n.d).reduce((acc, val)=>acc+val)*2*clockTic
+      var roll = draw.nested().size(windowW, rollH)
       var cursor = 0
-      chanson.melodie.forEach((note, i) => {
-          var noteX = (note.h[0]-1)*noteW
-          var noteCouleur = couleurNote[chanson.melodieNote[note.h[0]-1]]  
+      chanson.forEach((note, i) => {
           var noteY = rollH - cursor - clockTic
+          note.h.forEach (h => {
+            //console.log({ i: i, noteX: h*noteW , noteY: noteY , noteCouleur: couleurNote[h] })
+            roll.rect(noteW, clockTic).move(h*noteW,noteY).fill(couleurNote[h])
+            //roll.text(i).font('size', 10).center(h*noteW+10,noteY+10)
+          })
           cursor = cursor + note.d*clockTic*2
-          console.log({  i: i, noteX: noteX , noteY: noteY , noteCouleur: noteCouleur })
-          nested.rect(noteW, clockTic).move(noteX,noteY).fill(noteCouleur)
       })
       draw.rect(windowW, 10).fill('#FFF').move(0, windowH-5*clockTic)
-      nested.move(0, windowH/2-rollH).animate(20000, 2000, 'now').move(0, windowH)
+      roll.move(0, (windowH/2)-rollH).animate(80000, 1000,'now').move(0, windowH)
     ]]>
   </script>
 </svg>
