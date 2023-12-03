@@ -1,88 +1,92 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <svg id="drawing" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" >
-  <!--script type="text/javascript" xlink:href="svg.min.js"></script-->
-
   <script type="text/javascript" xlink:href="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.js"></script>
   <script type="text/javascript" xlink:href="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.1/dist/svg.js"></script>
   <script type="text/javascript">
     <![CDATA[
-     
-      const chanson = [                   // "Emmanuel"                        // polyphonique
-        {h : [11 , 4 ] , d : 1}, // mesure 1
-        {h : [5 , 4 ] , d : 1}, // Mesure 2
-        {h : [11 , 6 ] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [ 9 , 4] , d : 1},
-        {h : [12 , 9] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [ 9 , 6] , d : 2}, // Mesure 4
-        {h : [ 7 , 4] , d : 1},
-        {h : [ 7 , 4] , d : 1},
-        {h : [ 7 , 4] , d : 1},
-        {h : [ 9 , 6] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [ 7 , 2] , d : 1},
-        {h : [ 4 , 0] , d : 1},
-        {h : [ 7 , 2] , d : 1},
-        {h : [ 9 , 0] , d : 1},
-        {h : [ 6 , 0] , d : 1},
-        {h : [ 4 , 11] , d : 1},
-        {h : [ 2 , 11] , d : 1},
-        {h : [ 4 , 11] , d : 1},
-        {h : [ 11    ] , d : 1}, // mesure 7
-        {h : [ 9 , 4] , d : 1},
-        {h : [9 , 0] , d : 1},
-        {h : [4 ]    , d : 1},
-        {h : [4 ]    , d : 1},
-        {h : [6 , 3] , d : 1},
-        {h : [7 , 4] , d : 1},
-        {h : [7 , 4] , d : 1}, // mesure 9
-        {h : [6 , 2] , d : 1},
-        {h : [4 , 0] , d : 1},
-        {h : [2 , 9] , d : 1},
-        {h : [2 , 9] , d : 1},
-        {h : [2 , 9] , d : 2},
-        {h : [7 , 11] , d : 1},
-        {h : [9 , 2] , d : 1}, // Mesure 11
-        {h : [11 , 2] , d : 1},
-        {h : [11 , 2] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [9 , 4] , d : 1},
-        {h : [12 , 9] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [9 , 6] , d : 1},
-        {h : [7 , 2] , d : 1},   // Mesure 13 
-        {h : [7 , 2] , d : 1},
-        {h : [7 , 2] , d : 2},
-        {h : [2 , 7] , d : 1},  // Mesure 14
-        {h : [2 , 6] , d : 1},
-        {h : [2 , 6] , d : 1},
-        {h : [2 , 6] , d : 1}, 
-        {h : [11 , 7] , d : 1}, // Mesure 15
-        {h : [11 , 7] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [11 , 7] , d : 1}, // Mesure 16
-        {h : [9 , 4] , d : 1},
-        {h : [12 , 9] , d : 1},
-        {h : [11 , 7] , d : 1},
-        {h : [9 , 6] , d : 1},   // Mesure 17
-        {h : [7 , 4] , d : 1},
-        {h : [7 , 4] , d : 2},
-        {h : [9 , 6] , d : 1},   // Mesure 18
-        {h : [11 , 7] , d : 1},
-        {h : [7 , 2] , d : 1},
-        {h : [4 , 0] , d : 1},
-        {h : [7 , 2] , d : 1},    // Mesure 19
-        {h : [9 , 0] , d : 1},
-        {h : [6 , 0] , d : 1},
-        {h : [4 , 0] , d : 1},
-        {h : [2 , 11] , d : 1},
-        {h : [4 , 11] , d : 1},
-        {h : [4 , 11] , d : 1},
-        {h : [4 , 11] , d : 40}
+
+    // format d'une chanson: un tableau de tableaux: 
+    //[[notes simultanées] , durée jusquau prochain évènement]
+
+      const chanson = [     // "Emmanuel"   polyphonique
+        [[ 11 ,  4 ] , 1 ], // mesure 1
+        [[  5 ,  4 ] , 1 ], // Mesure 2
+        [[ 11 ,  6 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[  9 ,  4 ] , 1 ],
+        [[ 12 ,  9 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[  9 ,  6 ] , 2 ], // Mesure 4
+        [[  7 ,  4 ] , 1 ],
+        [[  7 ,  4 ] , 1 ],
+        [[  7 ,  4 ] , 1 ],
+        [[  9 ,  6 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[  7 ,  2 ] , 1 ],
+        [[  4 ,  0 ] , 1 ],
+        [[  7 ,  2 ] , 1 ],
+        [[  9 ,  0 ] , 1 ],
+        [[  6 ,  0 ] , 1 ],
+        [[  4 , 11 ] , 1 ],
+        [[  2 , 11 ] , 1 ],
+        [[  4 , 11 ] , 1 ],
+        [[ 11      ] , 1 ], // mesure 7
+        [[  9 ,  4 ] , 1 ],
+        [[  9 ,  0 ] , 1 ],
+        [[  4      ] , 1 ],
+        [[  4      ] , 1 ],
+        [[  6 ,  3 ] , 1 ],
+        [[  7 ,  4 ] , 1 ],
+        [[  7 ,  4 ] , 1 ], // mesure 9
+        [[  6 ,  2 ] , 1 ],
+        [[  4 ,  0 ] , 1 ],
+        [[  2 ,  9 ] , 1 ],
+        [[  2 ,  9 ] , 1 ],
+        [[  2 ,  9 ] , 2 ],
+        [[  7 , 11 ] , 1 ],
+        [[  9 ,  2 ] , 1 ], // Mesure 11
+        [[ 11 ,  2 ] , 1 ],
+        [[ 11 ,  2 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[  9 ,  4 ] , 1 ],
+        [[ 12 ,  9 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[  9 ,  6 ] , 1 ],
+        [[  7 ,  2 ] , 1 ],   // Mesure 13 
+        [[  7 ,  2 ] , 1 ],
+        [[  7 ,  2 ] , 2 ],
+        [[  2 ,  7 ] , 1 ],  // Mesure 14
+        [[  2 ,  6 ] , 1 ],
+        [[  2 ,  6 ] , 1 ],
+        [[  2 ,  6 ] , 1 ], 
+        [[ 11 ,  7 ] , 1 ], // Mesure 15
+        [[ 11 ,  7 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ], // Mesure 16
+        [[  9 ,  4 ] , 1 ],
+        [[ 12 ,  9 ] , 1 ],
+        [[ 11 ,  7 ] , 1 ],
+        [[  9 ,  6 ] , 1 ],   // Mesure 17
+        [[  7 ,  4 ] , 1 ],
+        [[  7 ,  4 ] , 2 ],
+        [[  9 ,  6 ] , 1 ],   // Mesure 18
+        [[ 11 ,  7 ] , 1 ],
+        [[  7 ,  2 ] , 1 ],
+        [[  4 ,  0 ] , 1 ],
+        [[  7 ,  2 ] , 1 ],    // Mesure 19
+        [[  9 ,  0 ] , 1 ],
+        [[  6 ,  0 ] , 1 ],
+        [[  4 ,  0 ] , 1 ],
+        [[  2 , 11 ] , 1 ],
+        [[  4 , 11 ] , 1 ],
+        [[  4 , 11 ] , 1 ],
+        [[  4 , 11 ] ,120 ] //workaround de l'ease-out indésirable + 150% (80+120 tics)
       ]
+
+      const bpm = 40  // tempo approx en ticks per minute
+
       const couleurNote = [
         '#FF0000' , // Rouge            do3
         '#FF4500' , // Rouge orange     do#
@@ -97,28 +101,25 @@
         '#BC8F8F' , // Rosybrown        la#
         '#F08080' , // Corail clair     si
         '#FF0000'   // Rouge            do4
-      ];
-        
-      const clockTic = 20  //pixels , la moitié du plus court intervalle de temps entre 2 notes
-      var draw = SVG('#drawing').size('100%', '100%')
-      const windowW = $("#drawing")[0].clientWidth 
-      const windowH = $("#drawing")[0].clientHeight
+      ]
+
+      const draw = SVG('#drawing').size('100%', '100%')
+      const windowW = $("#drawing")[ 0 ].clientWidth 
+      const windowH = $("#drawing")[ 0 ].clientHeight
       draw.rect(windowW, windowH).fill('#000')
+      const noteH = 20                        // en pixels, c'estla moitié de la note la plus courte de la chanson
+      const clockTic = noteH*2                // donc 40 pixels 
       const noteW = Math.floor(windowW/couleurNote.length)
-      const rollH = chanson.map(n =>n.d).reduce((acc, val)=>acc+val)*2*clockTic
-      var roll = draw.nested().size(windowW, rollH)
-      var cursor = 0
-      chanson.forEach((note, i) => {
-          var noteY = rollH - cursor - clockTic
-          note.h.forEach (h => {
-            //console.log({ i: i, noteX: h*noteW , noteY: noteY , noteCouleur: couleurNote[h] })
-            roll.rect(noteW, clockTic).move(h*noteW,noteY).fill(couleurNote[h])
-            //roll.text(i).font('size', 10).center(h*noteW+10,noteY+10)
-          })
-          cursor = cursor + note.d*clockTic*2
+      const dureeChansonEnTics = chanson.reduce((acc, note)=>acc+note[1],0); 
+      const rollH = clockTic*dureeChansonEnTics
+      const roll = draw.nested().size(windowW, rollH)
+      var cursor = 0;                        // rappel: note[0]=les voix (ou pitch), note[1]= la durée .
+      chanson.forEach ( (note,i) => {
+          note[0].forEach (voix => roll.rect(noteW, noteH).move(voix*noteW, rollH-cursor).fill(couleurNote[voix]))
+          cursor += note[1]*clockTic
       })
-      draw.rect(windowW, 10).fill('#FFF').move(0, windowH-5*clockTic)
-      roll.move(0, (windowH/2)-rollH).animate(80000, 1000,'now').move(0, windowH)
+      draw.rect(windowW, 10).fill('#FFF').move(0, windowH-5*clockTic)   // la "barre d'arrivée" des notes
+      roll.move(0, (windowH/2)-rollH).animate(dureeChansonEnTics*60000/bpm, '1000','now').move(0, windowH)
     ]]>
   </script>
 </svg>
