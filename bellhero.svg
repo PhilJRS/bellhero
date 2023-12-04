@@ -112,7 +112,7 @@
       const noteW = Math.floor(windowW/couleurNote.length)
       const dureeChansonEnTics = chanson.reduce((acc, note)=>acc+note[1],0); 
       const rollH = clockTic*dureeChansonEnTics
-      const roll = draw.nested().size(windowW, rollH)
+      const roll = draw.nested().size(windowW, rollH+noteH)
       var cursor = 0;                        // rappel: note[0]=les voix (ou pitch), note[1]= la durée .
       chanson.forEach ( (note,i) => {
           note[0].forEach (voix => roll.rect(noteW, noteH).move(voix*noteW, rollH-cursor).fill(couleurNote[voix]))
