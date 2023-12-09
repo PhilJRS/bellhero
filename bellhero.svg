@@ -10,7 +10,7 @@
 
       const chanson = [     // "Emmanuel"   polyphonique
         [[ 11 ,  4 ] , 1 ], // mesure 1
-        [[  5 ,  4 ] , 1 ], // Mesure 2
+        [[  6 ,  4 ] , 1 ], // Mesure 2
         [[ 11 ,  6 ] , 1 ],
         [[ 11 ,  7 ] , 1 ],
         [[ 11 ,  7 ] , 1 ],
