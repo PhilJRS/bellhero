@@ -107,11 +107,13 @@
       const windowW = $("#drawing")[ 0 ].clientWidth 
       const windowH = $("#drawing")[ 0 ].clientHeight
       draw.rect(windowW, windowH).fill('#000')
-      const noteH = 20                        // en pixels, c'estla moitié de la note la plus courte de la chanson
-      const clockTic = noteH*2                // donc 40 pixels 
+      const noteH = 40                   // en pixels, c'estla note la plus courte de la chanson
+      const clockTic = 40                // 40 pixels 
       const noteW = Math.floor(windowW/couleurNote.length)
       const dureeChansonEnTics = chanson.reduce((acc, note)=>acc+note[1],0); 
       const rollH = clockTic*dureeChansonEnTics
+      const gradientCol = couleurNote.map( c => draw.gradient('linear', (add)=> {
+               add.stop(0, c, 0); add.stop(1, c, 1); add.from(0, 0); add.to(0, 1) }))
       const roll = draw.nested().size(windowW, rollH+noteH)
       var cursor = 0;                        // rappel: note[0]=les voix (ou pitch), note[1]= la durée .
       chanson.forEach ( (note,i) => {
@@ -119,7 +121,8 @@
           cursor += note[1]*clockTic
       })
       draw.rect(windowW, 10).fill('#FFF').move(0, windowH-5*clockTic)   // la "barre d'arrivée" des notes
-      roll.move(0, (windowH/2)-rollH).animate(dureeChansonEnTics*60000/bpm, '1000','now').move(0, windowH)
+      roll.move(0, (windowH/2)-rollH).animate(dureeChansonEnTics*60000/bpm, '1000','now').move(0, windowH
+      draw.on('click', () => roll.timeline()._paused ? roll.timeline().play() : roll.timeline().pause())
     ]]>
   </script>
 </svg>
