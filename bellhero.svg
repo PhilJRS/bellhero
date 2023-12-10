@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<svg id="drawing" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" >
-  <script type="text/javascript" xlink:href="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.js"></script>
+<svg id="drawing"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
   <script type="text/javascript" xlink:href="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.1/dist/svg.js"></script>
   <script type="text/javascript">
     <![CDATA[
-
+  
     // format d'une chanson: un tableau de tableaux: 
     //[[notes simultanées] , durée jusquau prochain évènement]
 
       const chanson = [     // "Emmanuel"   polyphonique
         [[ 11 ,  4 ] , 1 ], // mesure 1
-        [[  6 ,  4 ] , 1 ], // Mesure 2
+        [[  5 ,  4 ] , 1 ], // Mesure 2
         [[ 11 ,  6 ] , 1 ],
         [[ 11 ,  7 ] , 1 ],
         [[ 11 ,  7 ] , 1 ],
         [[  9 ,  4 ] , 1 ],
         [[ 12 ,  9 ] , 1 ],
         [[ 11 ,  7 ] , 1 ],
-        [[  9 ,  6 ] , 1 ], 
-        [[  7 ,  4 ] , 2 ],  // Mesure 4
+        [[  9 ,  6 ] , 2 ], // Mesure 4
+        [[  7 ,  4 ] , 1 ],
         [[  7 ,  4 ] , 1 ],
         [[  7 ,  4 ] , 1 ],
         [[  9 ,  6 ] , 1 ],
@@ -43,7 +42,7 @@
         [[  4 ,  0 ] , 1 ],
         [[  2 ,  9 ] , 1 ],
         [[  2 ,  9 ] , 1 ],
-        [[  2 ,  9 ] , 3 ],
+        [[  2 ,  9 ] , 2 ],
         [[  7 , 11 ] , 1 ],
         [[  9 ,  2 ] , 1 ], // Mesure 11
         [[ 11 ,  2 ] , 1 ],
@@ -104,24 +103,22 @@
       ]
 
       const draw = SVG('#drawing').size('100%', '100%')
-      const windowW = $("#drawing")[ 0 ].clientWidth 
-      const windowH = $("#drawing")[ 0 ].clientHeight
-      draw.rect(windowW, windowH).fill('#000')
-      const noteH = 40                   // en pixels, c'estla note la plus courte de la chanson
-      const clockTic = 40                // 40 pixels 
-      const noteW = Math.floor(windowW/couleurNote.length)
-      const dureeChansonEnTics = chanson.reduce((acc, note)=>acc+note[1],0); 
-      const rollH = clockTic*dureeChansonEnTics
+      draw.rect('100%', '100%').fill('#000')
+      const ticsPerWH = 20
+      const noteW = 100/couleurNote.length+'%'
+      const duree = chanson.reduce((acc, note)=>acc+note[1],0); //durée de la chanson en tics
+      const noteH = 100/(duree+1) + '%'     // en %, la note la plus courte de la chanson, 20 par écran (5%)
+      const roll = draw.nested().size('100%', 100*(duree+1)/ticsPerWH +'%')
       const gradientCol = couleurNote.map( c => draw.gradient('linear', (add)=> {
                add.stop(0, c, 0); add.stop(1, c, 1); add.from(0, 0); add.to(0, 1) }))
-      const roll = draw.nested().size(windowW, rollH+noteH)
-      var cursor = 0;                        // rappel: note[0]=les voix (ou pitch), note[1]= la durée .
-      chanson.forEach ( (note,i) => {
-          note[0].forEach (voix => roll.rect(noteW, noteH).move(voix*noteW, rollH-cursor).fill(couleurNote[voix]))
-          cursor += note[1]*clockTic
+      var cursor = 100*duree/(duree+1)    // rappel: note[0]=les voix (ou pitch), note[1]= la durée .
+      const offsetVoix = 100/ couleurNote.length
+      chanson.forEach ((note ,i) => {
+        note[0].forEach (voix => roll.rect(noteW, noteH).move(voix*offsetVoix+'%', cursor+'%').fill(gradientCol[voix])) // gradientCol
+        cursor = cursor - 100*note[1]/(duree+1)
       })
-      draw.rect(windowW, 10).fill('#FFF').move(0, windowH-5*clockTic)   // la "barre d'arrivée" des notes
-      roll.move(0, (windowH/2)-rollH).animate(dureeChansonEnTics*60000/bpm, '1000','now').move(0, windowH
+      draw.rect('100%', 10).fill('#FFF').move(0, '80%')   // "barre d'arrivée" des notes
+      roll.move(0, -100*(duree-9)/ticsPerWH  +'%').animate(duree*60000/bpm, '1000','now').move(0, '100%')
       draw.on('click', () => roll.timeline()._paused ? roll.timeline().play() : roll.timeline().pause())
     ]]>
   </script>
