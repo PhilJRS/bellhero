@@ -1,4 +1,4 @@
 # bellhero
-The Bell Hero svg app of Gregoire Haldemann.
-A simple on-screen toy to guide children playing simple tunes on a set of 13 colored chromatic bells.
-Inspired by the Guitar Hero video game started in 2005 by Harmonix Music Systems.  
+The Bell Hero animation page for Gregoire Haldemann by Philippe Schneider.
+A svg/js application to guide children playing a tune with colored bells.
+Inspired by the Guitar Hero video game (Harmonix Music Systems 2005).
