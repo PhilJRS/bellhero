@@ -17,7 +17,7 @@
         [[ 12 ,  9 ] , 1 ],
         [[ 11 ,  7 ] , 1 ],
         [[  9 ,  6 ] , 1 ], // mesure 4
-        [[  7 ,  4 ] , 3 ],,
+        [[  7 ,  4 ] , 3 ],
         [[  9 ,  6 ] , 1 ],
         [[ 11 ,  7 ] , 1 ],
         [[  7 ,  2 ] , 1 ],
@@ -92,19 +92,63 @@
       const ticsPerWH = 20
       const noteW = 100/couleurNote.length+'%'
       const duree = chanson.reduce((acc, note)=>acc+note[1],0); //durée de la chanson en tics
-      const noteH = 100/(duree+1) + '%'     // en %, la note la plus courte de la chanson, 20 par écran (5%)
       const roll = draw.nested().size('100%', 100*(duree+1)/ticsPerWH +'%')
+      roll.rect('100%', '100%').fill('#000')
+      
+      const noteH = 100/(duree+1) + '%'     // en %, la note la plus courte de la chanson, 20 par écran (5%)
       const gradientCol = couleurNote.map( c => draw.gradient('linear', (add)=> {
-               add.stop(0, c, 0); add.stop(1, c, 1); add.from(0, 0); add.to(0, 1) }))
+                add.stop(0, c, 0); add.stop(1, c, 1); add.from(0, 0); add.to(0, 1) }))
       var cursor = 100*duree/(duree+1)    // rappel: note[0]=les voix (ou pitch), note[1]= la durée .
       const offsetVoix = 100/ couleurNote.length
       chanson.forEach ((note ,i) => {
-        note[0].forEach (voix => roll.rect(noteW, noteH).move(voix*offsetVoix+'%', cursor+'%').fill(gradientCol[voix])) // gradientCol
+        note[0].forEach (voix => roll.rect(noteW, noteH).move(voix*offsetVoix+'%', cursor+'%').fill(gradientCol[voix]))
         cursor = cursor - 100*note[1]/(duree+1)
       })
       draw.rect('100%', 10).fill('#FFF').move(0, '80%')   // "barre d'arrivée" des notes
-      roll.move(0, -100*(duree-9)/ticsPerWH  +'%').animate(duree*60000/bpm, '1000','now').move(0, '100%')
-      draw.on('click', () => roll.timeline()._paused ? roll.timeline().play() : roll.timeline().pause())
+      roll.move(0, -100*(duree-9)/ticsPerWH  +'%')
+      var runner = roll.animate(duree*60000/bpm, 0,'now').move(0, '100%')
+      roll.timeline().pause()
+      nextState('PAUSE')  //lance le FSA
+      var pauseTime, oldCliY = 0 
+      function nextState(state) {
+        roll.off()
+        switch (state) {
+          case 'PAUSE':
+            roll.on('mousedown', e=>{
+                    oldCliY=e.clientY
+                    oldMs=Date.now()
+                    msPerPix = runner._timeline.getEndTime()/roll.node.getBoundingClientRect().height
+                              nextState('HESIT')})
+            roll.on('mouseup', ()=>{
+                    roll.timeline().play()
+                              nextState('RUN')})
+          break
+          case 'RUN':
+            roll.on('mouseup', ()=>{
+                    roll.timeline().pause()
+                    pauseTime = runner._time
+                              nextState('PAUSE') })
+          break
+          case 'DRAG':
+            roll.on(['mouseup', 'mouseleave'], e=>{
+                    if (Math.abs(oldCliY-e.clientY)<30 && Math.abs(Date.now-oldMs)<300) {
+                      roll.timeline().play()
+                              nextState('RUN'  )}
+                    else {
+                      pauseTime = runner._time
+                              nextState('PAUSE')}})
+                    roll.on('mousemove',  e=>{
+                      runner.time(pauseTime + (e.clientY - oldCliY)*msPerPix)
+                              nextState('DRAG')})
+          break
+          case 'HESIT':
+            roll.on('mouseup', ()=>{
+                    roll.timeline().play()
+                              nextState('RUN')}) 
+            roll.on('mousemove', ()=>{
+                              nextState('DRAG')})
+          break
+      }}
     ]]>
   </script>
 </svg>
