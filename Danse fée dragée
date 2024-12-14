@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg id="drawing"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+  <script type="text/javascript" xlink:href="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.1/dist/svg.js"></script>
+  <script type="text/javascript">
+    <![CDATA[
+  
+    // format d'une chanson: un tableau de tableaux: 
+    //[[notes simultanées] , durée jusquau prochain évènement]
+
+      const chanson = [     // "Danse"   polyphonique
+        [[ 13 ] , 0.5 ], // mesure 1
+        [[ 10 ] , 0.5 ], 
+        [[ 13 ] , 1   ],
+        [[ 12 ] , 1   ],
+        [[ 9  ] , 1   ],// mesure 2
+        [[ 10 ] , 1   ],
+        [[ 8  ] , 0.5 ],
+        [[ 8  ] , 0.5 ],
+        [[ 8  ] , 1   ],
+        [[ 7  ] , 0.5 ], // mesure 3
+        [[ 7  ] , 0.5 ],
+        [[ 7  ] , 1   ],
+        [[ 6  ] , 0.5 ],
+        [[ 6  ] , 0.5 ],
+        [[ 6  ] , 1   ],
+        [[ 5  ] , 0.5 ], // mesure 4
+        [[ 10 ] , 0.5 ],
+        [[ 6  ] , 0.5 ],
+        [[ 10 ] , 0.5 ],
+        [[ 5  ] , 3   ],
+        [[ 13 ] , 0.5 ], // mesure 5
+        [[ 10 ] , 0.5 ],
+        [[ 13 ] , 1   ],
+        [[ 12 ] , 1   ],
+        [[ 6  ] , 1   ], // mesure 6
+        [[ 5  ] , 1   ],
+        [[ 13 ] , 0.5 ],
+        [[ 13 ] , 0.5 ],
+        [[ 13 ] , 1   ],
+        [[ 12 ] , 0.5 ], // mesure 7
+        [[ 12 ] , 0.5 ],
+        [[ 12 ] , 1   ],
+        [[ 10 ] , 0.5 ],
+        [[ 10 ] , 0.5 ],
+        [[ 10 ] , 1   ],
+        [[ 9  ] , 0.5 ], // mesure 8
+        [[ 12 ] , 0.5 ],
+        [[ 10 ] , 0.5 ],
+        [[ 12 ] , 0.5 ],
+        [[ 9  ] , 3   ],
+        [[ 13 ] , 0.5 ], // mesure 9 
+        [[ 10 ] , 0.5 ],
+        [[ 13 ] , 1   ],
+        [[ 12 ] , 1   ],
+        [[ 9  ] , 1   ], // mesure 10
+        [[ 10 ] , 1   ],
+        [[ 8  ] , 0.5 ],
+        [[ 8  ] , 0.5 ],
+        [[ 8  ] , 1   ],
+        [[ 7  ] , 0.5 ], // mesure 11
+        [[ 7  ] , 0.5 ],
+        [[ 7  ] , 1   ],
+        [[ 6  ] , 0.5 ],
+        [[ 6  ] , 0.5 ],
+        [[ 6  ] , 1   ],
+        [[ 5  ] , 0.5 ], // mesure 12
+        [[ 10 ] , 0.5 ],
+        [[ 6  ] , 0.5 ],
+        [[ 10 ] , 0.5 ],
+        [[ 5  ] , 120 ], // workaround de l'ease-out indésirable + 150% (80+120 tics)
+      ]
+
+      const bpm = 40  // tempo approx en ticks per minute
+
+      const couleurNote = [
+        '#b01b2f' , // Rouge            do3
+        '#d02a38' , // Rouge orange     do#
+        '#df471e' , // Tomate           re
+        '#e8c233' , // orange foncé     re#
+        '#f3e101' , // jaune            mi
+        '#8bb936' , // Vert chartreuse  fa
+        '#38ac4b' , // Olivatre         fa#
+        '#266353' , // Vert foncé       sol
+        '#0c369c' , // Bleu sarcelle    sol#
+        '#240385' , // rouge pourpre    la
+        '#981f80' , // Rosybrown        la#
+        '#981f80' , // Corail clair     si
+        '#b01b2f'   // Rouge            do4
+      ]
+
+      const draw = SVG('#drawing').size('100%', '100%')
+      draw.rect('100%', '100%').fill('#000')
+      const ticsPerWH = 20
+      const noteW = 100/couleurNote.length+'%'
+      const duree = chanson.reduce((acc, note)=>acc+note[1],0); //durée de la chanson en tics
+      const roll = draw.nested().size('100%', 100*(duree+1)/ticsPerWH +'%')
+      roll.rect('100%', '100%').fill('#000')
+      
+      const noteH = 100/(duree+1) + '%'     // en %, la note la plus courte de la chanson, 20 par écran (5%)
+      const gradientCol = couleurNote.map( c => draw.gradient('linear', (add)=> {
+                add.stop(0, c, 0); add.stop(1, c, 1); add.from(0, 0); add.to(0, 1) }))
+      var cursor = 100*duree/(duree+1)    // rappel: note[0]=les voix (ou pitch), note[1]= la durée .
+      const offsetVoix = 100/ couleurNote.length
+      chanson.forEach ((note ,i) => {
+        note[0].forEach (voix => roll.rect(noteW, noteH).move(voix*offsetVoix+'%', cursor+'%').fill(gradientCol[voix]))
+        cursor = cursor - 100*note[1]/(duree+1)
+      })
+      draw.rect('100%', 10).fill('#FFF').move(0, '80%')   // "barre d'arrivée" des notes
+      roll.move(0, -100*(duree-9)/ticsPerWH  +'%')
+      var runner = roll.animate(duree*60000/bpm, 0,'now').move(0, '100%')
+      roll.timeline().pause()
+      nextState('PAUSE')  //lance le FSA
+      var pauseTime, oldCliY = 0 
+      function nextState(state) {
+        roll.off()
+        switch (state) {
+          case 'PAUSE':
+            roll.on('mousedown', e=>{
+                    oldCliY=e.clientY
+                    oldMs=Date.now()
+                    msPerPix = runner._timeline.getEndTime()/roll.node.getBoundingClientRect().height
+                              nextState('HESIT')})
+            roll.on('mouseup', ()=>{
+                    roll.timeline().play()
+                              nextState('RUN')})
+          break
+          case 'RUN':
+            roll.on('mouseup', ()=>{
+                    roll.timeline().pause()
+                    pauseTime = runner._time
+                              nextState('PAUSE') })
+          break
+          case 'DRAG':
+            roll.on(['mouseup', 'mouseleave'], e=>{
+                    if (Math.abs(oldCliY-e.clientY)<30 && Math.abs(Date.now-oldMs)<300) {
+                      roll.timeline().play()
+                              nextState('RUN'  )}
+                    else {
+                      pauseTime = runner._time
+                              nextState('PAUSE')}})
+                    roll.on('mousemove',  e=>{
+                      runner.time(pauseTime + (e.clientY - oldCliY)*msPerPix)
+                              nextState('DRAG')})
+          break
+          case 'HESIT':
+            roll.on('mouseup', ()=>{
+                    roll.timeline().play()
+                              nextState('RUN')}) 
+            roll.on('mousemove', ()=>{
+                              nextState('DRAG')})
+          break
+      }}
+    ]]>
+  </script>
+</svg>
