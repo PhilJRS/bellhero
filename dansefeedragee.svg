@@ -8,7 +8,7 @@
     //[[notes simultanées] , durée jusquau prochain évènement]
 
       const chanson = [     // "Danse"   polyphonique
-        [[ 13 ] , 1 ], // mesure 1
+        [[ 5 ] , 1 ], // test
         [[ 13 ] , 1 ], // mesure 1
         [[ 10 ] , 1 ], 
         [[ 13 ] , 2   ],
