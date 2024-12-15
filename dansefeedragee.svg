@@ -107,7 +107,7 @@
       })
       draw.rect('100%', 10).fill('#FFF').move(0, '80%')   // "barre d'arrivée" des notes
       roll.move(0, -100*(duree-9)/ticsPerWH  +'%')
-      var runner = roll.animate(duree*6000/bpm, 0,'now').move(0, '100%')
+      var runner = roll.animate(duree*30000/bpm, 0,'now').move(0, '100%')
       roll.timeline().pause()
       nextState('PAUSE')  //lance le FSA
       var pauseTime, oldCliY = 0 
